@@ -1,10 +1,10 @@
 # Pommerman
 
 ### Game Overview:
-* Pommerman is a play on Bomberman. There are three different variants, each of which follow the same basic idea but have their own distinct flavors:
-  * FFA: Free For All where four agents enter and one leaves. It tests planning, tactics, and cunning. The board is fully observable.
-  * Team (The NIPS '18 Competition environment): 2v2 where two teams of agents enter and one team wins. It tests planning, and tactics, and cooperation. The board is partially observable.
-  * Team Radio: Like team in that a it's a 2v2 game. Differences are that the agents each have a radio that they can use to convey 2 words from a dictionary of size 8 each step.
+* Pommerman 은 Bomberman 게임을 플레이하는 것인데 3가지 유형이 존재하며 각자 조금씩 다른 특성을 가집니다.
+  * FFA (Free For All) : 자유전투 즉, 4개의 에이전트가 투입되고 하나의 에이전트가 살아남을 때 까지 싸우는 게임입니다. 계획, 전략 및 컨닝 모두 가능하여, fully observable 한 board 입니다.
+  * Team (The NIPS '18 Competition environment): 2 대 2 에이전트가 2개의 팀으로 참여합니다. 계획, 전략 및 협업이 가능하여, partially observable 한 board 입니다.
+  * Team Radio: 2 대 2 팀전과 유사하지만 각 에이전트들은 radio 를 가지고 있어서 매 step 마다 8개의 길이의 단어를 서로 전달할 수 있습니다.
 
 ### Directory Overview:
 

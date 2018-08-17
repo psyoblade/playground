@@ -14,13 +14,20 @@ def main():
     # Create a set of agents (exactly four)
     agent_list = [
         agents.SimpleAgent(),
-        agents.RandomAgent(),
         agents.SimpleAgent(),
-        agents.RandomAgent(),
+        agents.SimpleAgent(),
+        agents.SimpleAgent(),
+        # agents.RandomAgent(),
+        # agents.PlayerAgent(),
         # agents.DockerAgent("pommerman/simple-agent", port=12345),
     ]
     # Make the "Free-For-All" environment using the agent list
-    env = pommerman.make('PommeFFACompetition-v0', agent_list)
+    # env = pommerman.make('PommeFFACompetitionFast-v0', agent_list)
+    env = pommerman.make('PommeTeamCompetition-v0', agent_list)
+    # env = pommerman.make('PommeTeam-v0', agent_list)
+    # env = pommerman.make('PommeTeamFast-v0', agent_list)
+    # kwargs = {'first_collapse': 10}
+    # env = pommerman.make('PommeFFA-v1', agent_list)
 
     # Run the episodes just like OpenAI Gym
     for i_episode in range(1):
