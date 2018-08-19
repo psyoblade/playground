@@ -11,12 +11,14 @@ def main():
     # Print all possible environments in the Pommerman registry
     print(pommerman.REGISTRY)
 
+    ppo = agents.TensorForceAgent()
     # Create a set of agents (exactly four)
     agent_list = [
         agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
-        agents.SimpleAgent(),
+        ppo,
+        # agents.SimpleAgent(),
         # agents.RandomAgent(),
         # agents.PlayerAgent(),
         # agents.DockerAgent("pommerman/simple-agent", port=12345),
@@ -24,6 +26,7 @@ def main():
     # Make the "Free-For-All" environment using the agent list
     # env = pommerman.make('PommeFFACompetitionFast-v0', agent_list)
     env = pommerman.make('PommeTeamCompetition-v0', agent_list)
+    ppo.initialize(env)
     # env = pommerman.make('PommeTeam-v0', agent_list)
     # env = pommerman.make('PommeTeamFast-v0', agent_list)
     # kwargs = {'first_collapse': 10}

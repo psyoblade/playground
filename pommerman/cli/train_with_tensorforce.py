@@ -19,8 +19,8 @@ from tensorforce.execution import Runner
 from tensorforce.contrib.openai_gym import OpenAIGym
 import gym
 
-from .. import helpers, make
-from ..agents import TensorForceAgent
+from pommerman import helpers, make
+from pommerman.agents import TensorForceAgent
 
 
 CLIENT = docker.from_env()
@@ -99,6 +99,11 @@ def main():
         default=None,
         help="File from which to load game state. Defaults to "
         "None.")
+    parser.add_argument(
+        "--checkpoint",
+        default="models/ppo",
+        help="Directory where checkpoint file stored to."
+    )
     args = parser.parse_args()
 
     config = args.config
@@ -106,6 +111,7 @@ def main():
     record_json_dir = args.record_json_dir
     agent_env_vars = args.agent_env_vars
     game_state_file = args.game_state_file
+    checkpoint = args.checkpoint
 
     # TODO: After https://github.com/MultiAgentLearning/playground/pull/40
     #       this is still missing the docker_env_dict parsing for the agents.
@@ -137,8 +143,13 @@ def main():
     wrapped_env = WrappedEnv(env, visualize=args.render)
     runner = Runner(agent=agent, environment=wrapped_env)
     runner.run(episodes=10, max_episode_timesteps=2000)
-    print("Stats: ", runner.episode_rewards, runner.episode_timesteps,
-          runner.episode_times)
+    print("Stats: ", 
+        runner.episode_rewards, 
+        runner.episode_timesteps,
+        runner.episode_times)
+
+    checkpoint_path = agent.save_model(checkpoint, False)
+    print("Model saved '{}'.".format(checkpoint_path))
 
     try:
         runner.close()
