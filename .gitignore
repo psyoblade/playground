@@ -169,6 +169,7 @@ local_config.py
 *xcodeproject*
 concierge.xcodeproj
 tmpimg/
+tmp/
 local
 .eslintrc
 models/
