@@ -2,6 +2,7 @@
 import pommerman
 from pommerman import agents
 
+from pommerman.agents import TensorForceAgent
 
 def main():
     '''Simple function to bootstrap a game.
@@ -11,13 +12,12 @@ def main():
     # Print all possible environments in the Pommerman registry
     print(pommerman.REGISTRY)
 
-    ppo = agents.TensorForceAgent()
     # Create a set of agents (exactly four)
     agent_list = [
+        agents.TensorForceAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
         agents.SimpleAgent(),
-        ppo,
         # agents.SimpleAgent(),
         # agents.RandomAgent(),
         # agents.PlayerAgent(),
@@ -26,11 +26,15 @@ def main():
     # Make the "Free-For-All" environment using the agent list
     # env = pommerman.make('PommeFFACompetitionFast-v0', agent_list)
     env = pommerman.make('PommeTeamCompetition-v0', agent_list)
-    ppo.initialize(env)
-    # env = pommerman.make('PommeTeam-v0', agent_list)
-    # env = pommerman.make('PommeTeamFast-v0', agent_list)
-    # kwargs = {'first_collapse': 10}
-    # env = pommerman.make('PommeFFA-v1', agent_list)
+
+    # Initialize already trained agent model
+    for agent in agent_list:
+        i = 0
+        if type(agent) == TensorForceAgent:
+            agent.initialize(env)
+            print('trained agent[{}] initiazlied.'.format(type(agent)))
+        else:
+            print('simple agent[{}] initiazlied.'.format(type(agent)))
 
     # Run the episodes just like OpenAI Gym
     for i_episode in range(1):

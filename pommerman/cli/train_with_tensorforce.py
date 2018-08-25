@@ -11,7 +11,7 @@ python train_with_tensorforce.py \
 """
 import atexit
 import functools
-import os
+import os, sys
 
 import argparse
 import docker
@@ -104,6 +104,16 @@ def main():
         default="models/ppo",
         help="Directory where checkpoint file stored to."
     )
+    parser.add_argument(
+        "--num_of_episodes",
+        default="10",
+        help="Number of episodes"
+    )
+    parser.add_argument(
+        "--max_timesteps",
+        default="2000",
+        help="Number of steps"
+    )
     args = parser.parse_args()
 
     config = args.config
@@ -112,6 +122,8 @@ def main():
     agent_env_vars = args.agent_env_vars
     game_state_file = args.game_state_file
     checkpoint = args.checkpoint
+    num_of_episodes = int(args.num_of_episodes)
+    max_timesteps = int(args.max_timesteps)
 
     # TODO: After https://github.com/MultiAgentLearning/playground/pull/40
     #       this is still missing the docker_env_dict parsing for the agents.
@@ -142,20 +154,25 @@ def main():
     atexit.register(functools.partial(clean_up_agents, agents))
     wrapped_env = WrappedEnv(env, visualize=args.render)
     runner = Runner(agent=agent, environment=wrapped_env)
-    runner.run(episodes=10, max_episode_timesteps=2000)
+    runner.run(episodes=num_of_episodes, max_episode_timesteps=max_timesteps)
     print("Stats: ", 
-        runner.episode_rewards, 
+        runner.episode_rewards[-30:], 
         runner.episode_timesteps,
         runner.episode_times)
 
-    checkpoint_path = agent.save_model(checkpoint, False)
-    print("Model saved '{}'.".format(checkpoint_path))
+    agent.save_model(checkpoint)
 
+    rewards = runner.episode_rewards
+    win = rewards.count(1)
+    lose = rewards.count(-1)
+    draw = rewards.count(0)
+    total = win + lose + draw
+    ratio = round((win / total) * 100.0, 2)
+    print("Results ({}%) = Win({}), Lose({}), Draw({})".format(ratio, win, lose, draw))
     try:
         runner.close()
     except AttributeError as e:
         pass
-
 
 if __name__ == "__main__":
     main()

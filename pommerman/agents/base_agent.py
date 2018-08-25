@@ -27,6 +27,12 @@ class BaseAgent:
     def init_agent(self, id, game_type):
         self._character = self._character(id, game_type)
 
+    def restore_model_if_exists(self, checkpoint):
+        pass
+
+    def save_model(self, checkpoint):
+        pass
+
     @staticmethod
     def has_user_input():
         return False

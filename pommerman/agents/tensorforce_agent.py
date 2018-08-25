@@ -26,7 +26,6 @@ class TensorForceAgent(BaseAgent):
     def initialize(self, env):
         from gym import spaces
         from tensorforce.agents import PPOAgent
-        checkpoint = self.checkpoint
         self.env = env
 
         if self.algorithm == "ppo":
@@ -50,8 +49,21 @@ class TensorForceAgent(BaseAgent):
                 ],
                 batching_capacity=1000,
                 step_optimizer=dict(type='adam', learning_rate=1e-4))
-
-            if os.path.exists(checkpoint):
-                self.agent.restore_model(checkpoint)
+            
+            self.restore_model_if_exists(self.checkpoint)
 
         return self.agent
+
+    def restore_model_if_exists(self, checkpoint):
+        pardir = os.path.abspath(os.path.join(checkpoint, os.pardir))
+        if os.path.exists(pardir):
+            self.agent.restore_model(pardir)
+            print("tensorforce model '{}' restored.".format(pardir))
+
+    def save_model(self, checkpoint):
+        pardir = os.path.abspath(os.path.join(checkpoint, os.pardir))
+        if not os.path.exists(pardir):
+            os.mkdir(pardir)
+            print("checkpoint dir '{}' created.".format(pardir))
+        checkpoint_path = agent.save_model(pardir, False)
+        print("checkpoint model '{}' saved.".format(checkpoint_path))
