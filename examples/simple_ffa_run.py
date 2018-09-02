@@ -25,7 +25,7 @@ def main():
     ]
     # Make the "Free-For-All" environment using the agent list
     # env = pommerman.make('PommeFFACompetitionFast-v0', agent_list)
-    env = pommerman.make('PommeTeamCompetition-v0', agent_list)
+    env = pommerman.make('PommeFFACompetition-v0', agent_list)
 
     # Initialize already trained agent model
     for agent in agent_list:

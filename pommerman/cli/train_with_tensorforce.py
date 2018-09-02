@@ -22,9 +22,7 @@ import gym
 from pommerman import helpers, make
 from pommerman.agents import TensorForceAgent
 
-
 CLIENT = docker.from_env()
-
 
 def clean_up_agents(agents):
     """Stops all agents"""

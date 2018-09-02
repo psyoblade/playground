@@ -16,7 +16,9 @@ class DockerAgentRunner(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def act(self, observation, action_space):
         """Given an observation, returns the action the agent should"""
-        raise NotImplementedError()
+        if observation == None or action_space == None:
+            raise NotImplementedError()
+        return action_space.sample()
 
     def run(self, host="0.0.0.0", port=10080):
         """Runs the agent by creating a webserver that handles action requests."""
