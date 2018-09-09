@@ -1,7 +1,7 @@
 # Playground for pommerman
 
 ## build docker images & run
-`bash
+```bash
 $> docker build -f examples/docker-agent/Dockerfile -t psyoblade/psyoblade-pommerman-agent:1 .
 ..
 Successfully built ad17f6a2858d
@@ -26,5 +26,4 @@ $> docker logs -f 183af8d84592
 $> echo '{"obs":{},"action_space":{[0,1,2,3,4,5]}}' > data.json
 $> curl -d "@data.json" -X POST http://localhost:10080/action
 $> curl -X POST -H "Content-Type: application/json" -d '{"obs":{}, "action_space":{[0,1,2,3,4,5]}}'
-
-`
+```

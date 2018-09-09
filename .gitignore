@@ -172,7 +172,8 @@ tmpimg/
 tmp/
 local
 .eslintrc
-models/
+models
+models.*
 
 # Web specific #
 ####################

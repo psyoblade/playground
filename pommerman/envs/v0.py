@@ -147,6 +147,7 @@ class Pomme(gym.Env):
                                       self._step_count, self._max_steps)
 
     def _get_done(self):
+        # print('_get_done called')
         return self.model.get_done(self._agents, self._step_count,
                                    self._max_steps, self._game_type,
                                    self.training_agent)

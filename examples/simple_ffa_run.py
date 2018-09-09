@@ -1,12 +1,14 @@
 '''An example to show how to set up an pommerman game programmatically'''
+import sys
 import pommerman
 from pommerman import agents
 
 from pommerman.agents import TensorForceAgent
 
-def main():
+DEFAULT_CONFIG = 'PommeTeamCompetition-v0'
+
+def main(config):
     '''Simple function to bootstrap a game.
-       
        Use this as an example to set up your training env.
     '''
     # Print all possible environments in the Pommerman registry
@@ -25,10 +27,11 @@ def main():
     ]
     # Make the "Free-For-All" environment using the agent list
     # env = pommerman.make('PommeFFACompetitionFast-v0', agent_list)
-    env = pommerman.make('PommeFFACompetition-v0', agent_list)
+    env = pommerman.make(config, agent_list)
 
     # Initialize already trained agent model
     for agent in agent_list:
+        print('agetn_id', agent.agent_id)
         i = 0
         if type(agent) == TensorForceAgent:
             agent.initialize(env)
@@ -39,6 +42,7 @@ def main():
     # Run the episodes just like OpenAI Gym
     for i_episode in range(1):
         state = env.reset()
+        # env.set_training_agent(0)
         done = False
         while not done:
             env.render()
@@ -47,6 +51,8 @@ def main():
         print('Episode {} finished'.format(i_episode))
     env.close()
 
-
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        DEFAULT_CONFIG = "Pomme%s-v0" % sys.argv[1]
+    print('Config({}) selected.'.format(DEFAULT_CONFIG))
+    main(DEFAULT_CONFIG)

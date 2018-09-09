@@ -545,19 +545,27 @@ class ForwardModel(object):
 
     @staticmethod
     def get_done(agents, step_count, max_steps, game_type, training_agent):
+        # print('get_done called...', training_agent)
         alive = [agent for agent in agents if agent.is_alive]
         alive_ids = sorted([agent.agent_id for agent in alive])
         if step_count >= max_steps:
+            print('gameover : max timestep over')
             return True
         elif game_type == constants.GameType.FFA:
             if training_agent is not None and training_agent not in alive_ids:
+                print('gameover : ffa training_agent has died')
                 return True
+            if len(alive) <= 1:
+                print('checkout : ffa only %s player survived' % len(alive))
             return len(alive) <= 1
-        elif any([
-                len(alive_ids) <= 1,
-                alive_ids == [0, 2],
-                alive_ids == [1, 3],
-        ]):
+        elif len(alive_ids) <= 1:
+            print('gameover : only one player survived')
+            return True
+        elif alive_ids == [0, 2]:
+            print('gameover : [0,2] team won')
+            return True
+        elif any([ alive_ids == [1, 3] ]):
+            print('gameover : [1,3] team won')
             return True
         return False
 
@@ -601,6 +609,7 @@ class ForwardModel(object):
 
     @staticmethod
     def get_rewards(agents, game_type, step_count, max_steps):
+        print('get_rewards called..', self.training_agent)
 
         def any_lst_equal(lst, values):
             '''Checks if list are equal'''

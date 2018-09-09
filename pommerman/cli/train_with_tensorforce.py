@@ -19,6 +19,8 @@ from tensorforce.execution import Runner
 from tensorforce.contrib.openai_gym import OpenAIGym
 import gym
 
+sys.path.append('.')
+
 from pommerman import helpers, make
 from pommerman.agents import TensorForceAgent
 

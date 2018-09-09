@@ -9,7 +9,7 @@ import numpy as np
 class TensorForceAgent(BaseAgent):
     """The TensorForceAgent. Acts through the algorith, not here."""
 
-    def __init__(self, character=characters.Bomber, algorithm='ppo', checkpoint='models/ppo'):
+    def __init__(self, character=characters.Bomber, algorithm='ppo', checkpoint='models/checkpoint'):
         super(TensorForceAgent, self).__init__(character)
         self.algorithm = algorithm
         self.checkpoint = checkpoint
@@ -55,8 +55,8 @@ class TensorForceAgent(BaseAgent):
         return self.agent
 
     def restore_model_if_exists(self, checkpoint):
-        pardir = os.path.abspath(os.path.join(checkpoint, os.pardir))
-        if os.path.exists(pardir):
+        if os.path.isfile(checkpoint):
+            pardir = os.path.abspath(os.path.join(checkpoint, os.pardir))
             self.agent.restore_model(pardir)
             print("tensorforce model '{}' restored.".format(pardir))
 
